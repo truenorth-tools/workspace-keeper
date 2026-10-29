@@ -43,6 +43,7 @@ export default class DockToPrimaryExtension extends Extension {
         // True from a display change until things settle; workspace changes in
         // this time are mutter's doing, not the user's, so aren't recorded.
         this._restoring = false;
+        this._blockingWorkspaces = false;
         this._restoreStart = 0;
         this._quietId = 0;
         this._maxId = 0;
@@ -76,6 +77,12 @@ export default class DockToPrimaryExtension extends Extension {
             });
         this._activeChangedId = global.workspace_manager.connect(
             'active-workspace-changed', () => this._onActiveWorkspaceChanged());
+        // With dynamic workspaces, removing an empty workspace renumbers the
+        // ones after it, so the remembered indices have to follow.
+        this._workspaceRemovedId = global.workspace_manager.connect(
+            'workspace-removed', () => this._onWorkspacesRenumbered());
+        this._workspacesReorderedId = global.workspace_manager.connect(
+            'workspaces-reordered', () => this._onWorkspacesRenumbered());
     }
 
     // The extension also runs in the unlock-dialog session mode because
@@ -86,8 +93,11 @@ export default class DockToPrimaryExtension extends Extension {
         this._clearTimeouts();
         if (this._activateIdleId)
             GLib.source_remove(this._activateIdleId);
+        this._unblockWorkspaceRemoval();
 
         global.workspace_manager.disconnect(this._activeChangedId);
+        global.workspace_manager.disconnect(this._workspaceRemovedId);
+        global.workspace_manager.disconnect(this._workspacesReorderedId);
         global.display.disconnect(this._createdId);
         global.display.disconnect(this._enteredId);
         Main.layoutManager.disconnect(this._monitorsId);
@@ -126,6 +136,42 @@ export default class DockToPrimaryExtension extends Extension {
         this._pending.delete(window);
     }
 
+    _onWorkspacesRenumbered() {
+        if (this._restoring)
+            return;
+        for (const window of this._windowSignals.keys())
+            this._remember(window);
+        this._rememberActiveWorkspace();
+    }
+
+    // With dynamic workspaces GNOME removes a workspace as soon as it is
+    // empty, which happens to some while windows are moving between displays.
+    // Keep them until everything is back in place.
+    _blockWorkspaceRemoval() {
+        if (this._blockingWorkspaces || !Meta.prefs_get_dynamic_workspaces())
+            return;
+        Main.wm.blockWorkspaceUpdates();
+        this._blockingWorkspaces = true;
+    }
+
+    _unblockWorkspaceRemoval() {
+        if (!this._blockingWorkspaces)
+            return;
+        Main.wm.unblockWorkspaceUpdates();
+        this._blockingWorkspaces = false;
+    }
+
+    // A workspace may already have been removed before the display change
+    // reached us; with dynamic workspaces, add it back.
+    _ensureWorkspace(index) {
+        const manager = global.workspace_manager;
+        if (Meta.prefs_get_dynamic_workspaces()) {
+            while (manager.get_n_workspaces() <= index)
+                manager.append_new_workspace(false, global.get_current_time());
+        }
+        return index < manager.get_n_workspaces();
+    }
+
     _onWorkspaceChanged(window) {
         if (this._pending.has(window))
             this._restoreWorkspace(window);
@@ -160,6 +206,7 @@ export default class DockToPrimaryExtension extends Extension {
         this._clearTimeouts();
         const elapsed = GLib.get_monotonic_time() / 1000 - this._restoreStart;
         this._restoring = false;
+        this._unblockWorkspaceRemoval();
         this._sourceConnectors = null;
         this._heldWorkspace = null;
         this._rememberActiveWorkspace();
@@ -202,7 +249,7 @@ export default class DockToPrimaryExtension extends Extension {
             return false;
 
         // Stay pending until things settle so a later reassignment is undone too.
-        if (index < global.workspace_manager.get_n_workspaces() &&
+        if (this._ensureWorkspace(index) &&
             window.get_workspace()?.index() !== index) {
             if (DEBUG) {
                 debug(`${describe(window)}: workspace ` +
@@ -284,7 +331,7 @@ export default class DockToPrimaryExtension extends Extension {
     _activateHeldWorkspace() {
         const manager = global.workspace_manager;
         const index = this._heldWorkspace;
-        if (index === null || index >= manager.get_n_workspaces() ||
+        if (index === null || !this._ensureWorkspace(index) ||
             manager.get_active_workspace_index() === index)
             return;
         debug(`active workspace ${manager.get_active_workspace_index()} -> ${index}`);
@@ -310,6 +357,7 @@ export default class DockToPrimaryExtension extends Extension {
         // several displays in a row.
         if (!this._restoring) {
             this._sourceConnectors = this._primaryConnectors;
+            this._blockWorkspaceRemoval();
             this._snapshot();
         }
         this._primaryConnectors = this._getPrimaryConnectors();
