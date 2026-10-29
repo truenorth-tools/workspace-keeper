@@ -105,7 +105,10 @@ export default class DockToPrimaryExtension extends Extension {
     }
 
     _track(window) {
-        if (this._windowSignals.has(window))
+        // Menus, tooltips and other popups come and go all the time and are
+        // never moved, so don't spend signal handlers on them.
+        if (this._windowSignals.has(window) || window.is_override_redirect() ||
+            !MOVABLE_TYPES.includes(window.get_window_type()))
             return;
 
         this._windowSignals.set(window, [
@@ -182,7 +185,8 @@ export default class DockToPrimaryExtension extends Extension {
             if (onAll)
                 continue;
             this._pending.set(window, index);
-            debug(`${describe(window)}: snapshot workspace ${index}`);
+            if (DEBUG)
+                debug(`${describe(window)}: snapshot workspace ${index}`);
         }
         this._restoring = true;
     }
@@ -200,8 +204,10 @@ export default class DockToPrimaryExtension extends Extension {
         // Stay pending until things settle so a later reassignment is undone too.
         if (index < global.workspace_manager.get_n_workspaces() &&
             window.get_workspace()?.index() !== index) {
-            debug(`${describe(window)}: workspace ` +
-                `${window.get_workspace()?.index()} -> ${index}`);
+            if (DEBUG) {
+                debug(`${describe(window)}: workspace ` +
+                    `${window.get_workspace()?.index()} -> ${index}`);
+            }
             window.change_workspace_by_index(index, false);
             return true;
         }
@@ -219,8 +225,10 @@ export default class DockToPrimaryExtension extends Extension {
         const index = onAll ? entry.index : workspace.index();
         if (entry?.index === index && entry.onAll === onAll)
             return;
-        debug(`${describe(window)}: remembered workspace ` +
-            `${onAll ? 'all' : index}`);
+        if (DEBUG) {
+            debug(`${describe(window)}: remembered workspace ` +
+                `${onAll ? 'all' : index}`);
+        }
         this._workspaces.set(window, {
             index,
             onAll,
@@ -364,8 +372,10 @@ export default class DockToPrimaryExtension extends Extension {
             if (!sources.has(window.get_monitor()))
                 continue;
 
-            debug(`moving ${describe(window)} to primary, ` +
-                `workspace ${this._pending.get(window)}`);
+            if (DEBUG) {
+                debug(`moving ${describe(window)} to primary, ` +
+                    `workspace ${this._pending.get(window)}`);
+            }
             window.move_to_monitor(primary);
             if (this._pending.has(window))
                 this._restoreWorkspace(window);
