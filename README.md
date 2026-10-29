@@ -1,24 +1,47 @@
 # Dock to Primary
 
-A GNOME Shell extension that keeps your windows where you can use them when you plug in or unplug a display.
+A GNOME Shell extension that moves your windows onto the primary display whenever it changes, each on its own workspace.
 
-Whenever the primary display changes, Dock to Primary moves the windows from the old primary onto the new one. Each window stays on its own workspace, and you stay on the workspace you were using. The primary display can change because a display is connected or disconnected, or because you pick a new primary in Settings.
+## The problem
 
-- **Plug in a monitor** that is set as primary: your laptop windows move onto it, each on its own workspace.
-- **Unplug it**: everything comes back to the laptop screen, still on the right workspaces.
-- Works with any connection: HDMI, DisplayPort, USB-C and docks.
-- Nothing to configure.
+GNOME's default setting is *workspaces on primary display only*: the primary display has workspaces, and any other display shows the same windows whatever workspace you're on. That works well until the displays change:
 
-## Why
-
-With GNOME's default *workspaces on primary display only* setting, windows on a secondary display belong to every workspace at once. When the display layout changes, GNOME (mutter) has to pick a workspace for each of them, and it usually puts them all on the one you're looking at. Windows also stay on the old primary when a new one is connected, so after docking your work is on the small laptop screen.
+- **Plug in a monitor** and set it as primary, and your windows stay on the laptop screen. You have to drag each one across.
+- **Unplug it**, and GNOME (mutter) has to choose a workspace for every window it brings back, and it usually puts them all on the one you're looking at. Work you had spread over six workspaces ends up piled on one.
 
 This has been reported upstream for years ([mutter#761](https://gitlab.gnome.org/GNOME/mutter/-/work_items/761), [gnome-shell#1046](https://gitlab.gnome.org/GNOME/gnome-shell/-/work_items/1046)). Dock to Primary works around it until GNOME fixes it.
 
-## How it differs from similar extensions
+## Why I wrote it
 
-- [Move all windows to primary screen](https://extensions.gnome.org/extension/8268/move-all-windows-to-primary-screen/) does a similar move, but only when you click its button or press its shortcut. Dock to Primary runs by itself whenever the displays change.
-- Layout-restoring extensions such as [Dynamic Window Position](https://github.com/wranvaud/dynamic-window-position) remember exact window positions for each display setup. Dock to Primary is simpler: it gathers everything onto whichever display is primary and leaves positions to GNOME.
+I use a laptop that I plug into an external monitor at a desk. The monitor is where I work, with my windows organised across workspaces, and the laptop screen beside it holds reference material that I want in view whatever workspace I'm on. Every time I docked I had to drag my windows over to the monitor, and every time I left the desk I had to sort them back out of one heap. I wanted the windows to follow the primary display by themselves and keep their workspaces, with nothing to set up.
+
+## What it does
+
+Whenever the primary display changes, Dock to Primary moves the windows from the old primary onto the new one. Each window goes back to its own workspace, and you stay on the workspace you were using. The primary display can change because a display is connected or disconnected, or because you pick a new primary in Settings.
+
+- **Docking**: your laptop windows move onto the monitor, each on its own workspace.
+- **Undocking**: everything comes back to the laptop screen, still on the right workspaces.
+- Works with any connection: HDMI, DisplayPort, USB-C and docks.
+- Nothing to configure, and nothing saved between sessions.
+
+## Assumptions
+
+Dock to Primary is built for one way of working:
+
+- **Workspaces only on the primary display** (GNOME's default). The primary display is where you work, and any other display is for things you want in view all the time.
+- **A fixed number of workspaces**, set in Settings → Multitasking → Workspaces. With dynamic workspaces, GNOME removes workspaces that become empty while windows are moving, so windows may land one workspace off.
+- **The display you want to work on is set as primary** in Settings → Displays.
+
+## Similar extensions
+
+A few other extensions deal with windows when displays change. Each one does a slightly different job:
+
+- [Move all windows to primary screen](https://extensions.gnome.org/extension/8268/move-all-windows-to-primary-screen/) gathers windows onto the primary display when you click its top bar icon or press its shortcut. It has options for how workspaces are handled and which apps to leave alone. Use it if you want to choose when the move happens.
+- [Window State Manager](https://extensions.gnome.org/extension/5353/window-state-manager/) saves window positions as you work and restores them when the display arrangement changes. Use it if you want exact layouts back for setups you use often.
+- [Deja Window](https://extensions.gnome.org/extension/9024/deja-window/) applies per-app rules (workspace, size, position) when each app opens. It works alongside Dock to Primary rather than instead of it.
+- [Return to Monitor](https://extensions.gnome.org/extension/842/return-to-monitor/) tackled a similar problem for GNOME 3.10–3.12 and isn't maintained for current GNOME.
+
+Dock to Primary is narrower and lighter than these. It runs only when the primary display changes, it needs no saved layout (so it also works with a monitor it has never seen, such as a hot desk or a projector), and its focus is putting every window back on the right workspace.
 
 ## Install
 
@@ -50,19 +73,9 @@ Requires GNOME Shell 50.
 
 The extension also runs on the lock screen, because displays are often connected while the screen is locked (for example when docking a laptop). If it were turned off while locked, it would forget each window's workspace and miss the change.
 
-## Tip: moving a window to the other display
-
-GNOME already has a shortcut for sending a single window to another display, alongside Super+Shift+Page Up/Down for workspaces:
-
-- **Super+Shift+←/→** moves the focused window to the display on its left or right.
-- **Super+Shift+↑/↓** does the same for displays stacked above or below.
-
-Which arrow to use depends on how the displays are arranged in Settings → Displays. To change the keys, look for "Move window one monitor to the left/right" in Settings → Keyboard → View and Customise Shortcuts → Navigation. A window moved back to the primary display lands on the workspace you're on.
-
 ## Known limitations
 
-- **Use a fixed number of workspaces.** With dynamic workspaces, GNOME removes workspaces that become empty while windows are being moved, so the numbering can shift and windows may land one workspace off. Set a fixed number in Settings → Multitasking → Workspaces.
-- **Windows that were on a secondary display** (not the old primary) belonged to every workspace, so there is no workspace to restore. They go wherever GNOME puts them.
+- **Windows that were on a secondary display** (not the old primary) belonged to every workspace, so there is no workspace to restore. They go wherever GNOME puts them, usually the workspace you're on.
 - **Some apps can't tile to half of a small screen.** Apps with a large minimum width, such as some Electron apps, drop out of half-screen tiling when moved to a smaller display, and Super+←/→ does nothing there. That limit is set by the app, not by this extension.
 - Tested on Wayland. X11 sessions should work but haven't been tested.
 
@@ -75,6 +88,8 @@ journalctl --user -f | grep dock-to-primary
 ```
 
 Please include this output when [opening an issue](https://github.com/truenorth-tools/dock-to-primary/issues).
+
+To move a single window between displays yourself, GNOME's built-in Super+Shift+←/→ (or ↑/↓) sends it to the next display in that direction.
 
 ## License
 
