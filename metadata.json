@@ -1,7 +1,7 @@
 {
   "uuid": "keep-workspaces@truenorth-tools",
   "name": "Keep Workspaces on Monitor Change",
-  "description": "Keeps each window on its original workspace when the primary display changes, moving windows to the new primary display. Handles connecting and disconnecting external monitors and choosing a new primary display in Settings, with fixed or dynamic workspaces. No configuration needed.",
+  "description": "Keeps windows on their original workspaces when an external monitor is connected or disconnected. When the primary display changes (unplugging a laptop from a monitor or dock, plugging one in, or choosing a new primary display in Settings), windows move to the new primary display and each returns to its own workspace instead of piling onto one. The active workspace stays the same. Works with fixed and dynamic workspaces on Wayland. Multi-monitor hotplug support, no configuration needed.",
   "shell-version": [
     "50"
   ],

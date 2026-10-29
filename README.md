@@ -1,6 +1,6 @@
 # Keep Workspaces on Monitor Change
 
-A GNOME Shell extension that keeps each window on its original workspace when the primary display changes.
+A GNOME Shell extension that keeps windows on their original workspaces when an external monitor is connected or disconnected, or a new primary display is chosen in Settings.
 
 ## Motivation
 
