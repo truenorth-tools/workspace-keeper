@@ -4,7 +4,7 @@ A GNOME Shell extension that keeps each window on its original workspace when th
 
 ## Motivation
 
-With the setting to have workspaces on the primary display only, GNOME does not preserve the workspace layout when the primary display changes.
+When workspaces are enabled for primary display only, GNOME does not preserve the workspace layout when the primary display changes.
 
 If an external monitor becomes the primary display, windows spread across the laptop's workspaces are all placed on a single workspace of the monitor.
 
