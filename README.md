@@ -1,4 +1,4 @@
-# Keep Workspaces on Monitor Change
+# Workspace Keeper
 
 A GNOME Shell extension that keeps windows on their original workspaces when an external monitor is connected or disconnected, or a new primary display is chosen in Settings.
 
@@ -10,7 +10,7 @@ If an external monitor becomes the primary display, windows spread across the la
 
 This has been reported upstream ([mutter#761](https://gitlab.gnome.org/GNOME/mutter/-/work_items/761), [gnome-shell#1046](https://gitlab.gnome.org/GNOME/gnome-shell/-/work_items/1046)).
 
-Keep Workspaces on Monitor Change moves the windows to the new primary display and returns each window to its original workspace, so the layout stays the same.
+Workspace Keeper moves the windows to the new primary display and returns each window to its original workspace, so the layout stays the same.
 
 ## Features
 
