@@ -34,7 +34,7 @@ Workspace Keeper moves the windows to the new primary display and returns each w
 ### From source
 
 ```sh
-git clone https://github.com/truenorth-tools/keep-workspaces-on-monitor-change.git \
+git clone https://github.com/truenorth-tools/workspace-keeper.git \
     ~/.local/share/gnome-shell/extensions/keep-workspaces@truenorth-tools
 ```
 
@@ -72,7 +72,7 @@ To enable logging, set `DEBUG = true` near the top of `extension.js`, log out an
 journalctl --user -f | grep keep-workspaces
 ```
 
-Please include this output when [opening an issue](https://github.com/truenorth-tools/keep-workspaces-on-monitor-change/issues).
+Please include this output when [opening an issue](https://github.com/truenorth-tools/workspace-keeper/issues).
 
 ## License
 
