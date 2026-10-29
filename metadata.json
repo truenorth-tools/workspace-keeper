@@ -1,7 +1,7 @@
 {
-  "uuid": "dock-to-primary@truenorth-tools",
-  "name": "Dock to Primary",
-  "description": "Keeps each window on its original workspace when the primary display changes, moving windows to the new primary display. Handles connecting and disconnecting displays and choosing a new primary in Settings, with fixed or dynamic workspaces. No configuration needed.",
+  "uuid": "keep-workspaces@truenorth-tools",
+  "name": "Keep Workspaces on Monitor Change",
+  "description": "Keeps each window on its original workspace when the primary display changes, moving windows to the new primary display. Handles connecting and disconnecting external monitors and choosing a new primary display in Settings, with fixed or dynamic workspaces. No configuration needed.",
   "shell-version": [
     "50"
   ],
@@ -10,6 +10,6 @@
     "unlock-dialog"
   ],
   "version": 2,
-  "url": "https://github.com/truenorth-tools/dock-to-primary",
+  "url": "https://github.com/truenorth-tools/keep-workspaces-on-monitor-change",
   "version-name": "1.0"
 }

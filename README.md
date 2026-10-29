@@ -1,4 +1,4 @@
-# Dock to Primary
+# Keep Workspaces on Monitor Change
 
 A GNOME Shell extension that keeps each window on its original workspace when the primary display changes.
 
@@ -10,7 +10,7 @@ If an external monitor becomes the primary display, windows spread across the la
 
 This has been reported upstream ([mutter#761](https://gitlab.gnome.org/GNOME/mutter/-/work_items/761), [gnome-shell#1046](https://gitlab.gnome.org/GNOME/gnome-shell/-/work_items/1046)).
 
-Dock to Primary moves the windows to the new primary display and returns each window to its original workspace, so the layout stays the same.
+Keep Workspaces on Monitor Change moves the windows to the new primary display and returns each window to its original workspace, so the layout stays the same.
 
 ## Features
 
@@ -34,14 +34,14 @@ Dock to Primary moves the windows to the new primary display and returns each wi
 ### From source
 
 ```sh
-git clone https://github.com/truenorth-tools/dock-to-primary.git \
-    ~/.local/share/gnome-shell/extensions/dock-to-primary@truenorth-tools
+git clone https://github.com/truenorth-tools/keep-workspaces-on-monitor-change.git \
+    ~/.local/share/gnome-shell/extensions/keep-workspaces@truenorth-tools
 ```
 
 Log out and back in (on Wayland, GNOME Shell loads new extensions only at login), then run:
 
 ```sh
-gnome-extensions enable dock-to-primary@truenorth-tools
+gnome-extensions enable keep-workspaces@truenorth-tools
 ```
 
 ## Known limitations
@@ -53,10 +53,10 @@ gnome-extensions enable dock-to-primary@truenorth-tools
 
 - [Move all windows to primary screen](https://extensions.gnome.org/extension/8268/move-all-windows-to-primary-screen/) moves windows to the primary display on demand, from a top bar button or keyboard shortcut.
 - [Window State Manager](https://extensions.gnome.org/extension/5353/window-state-manager/) saves window positions and restores them when the display arrangement changes.
-- [Deja Window](https://extensions.gnome.org/extension/9024/deja-window/) applies per-app rules for workspace, size and position when an app opens. It can be used alongside Dock to Primary.
+- [Deja Window](https://extensions.gnome.org/extension/9024/deja-window/) applies per-app rules for workspace, size and position when an app opens. It can be used alongside this extension.
 - [Return to Monitor](https://extensions.gnome.org/extension/842/return-to-monitor/) addressed a similar problem for GNOME 3.10–3.12 and is no longer maintained.
 
-Dock to Primary differs from these in that it acts automatically whenever the primary display changes and restores each window's workspace rather than an exact position. It needs no saved layouts or per-app rules, so it works with any display.
+This extension differs from these in that it acts automatically whenever the primary display changes and restores each window's workspace rather than an exact position. It needs no saved layouts or per-app rules, so it works with any display.
 
 ## How it works
 
@@ -69,10 +69,10 @@ The extension remains active on the lock screen, as laptops are often docked whi
 To enable logging, set `DEBUG = true` near the top of `extension.js`, log out and back in, then follow the log while connecting or disconnecting a display:
 
 ```sh
-journalctl --user -f | grep dock-to-primary
+journalctl --user -f | grep keep-workspaces
 ```
 
-Please include this output when [opening an issue](https://github.com/truenorth-tools/dock-to-primary/issues).
+Please include this output when [opening an issue](https://github.com/truenorth-tools/keep-workspaces-on-monitor-change/issues).
 
 ## License
 

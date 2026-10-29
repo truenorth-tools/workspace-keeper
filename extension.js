@@ -20,7 +20,7 @@ const DEBUG = false;
 
 function debug(message) {
     if (DEBUG)
-        console.log(`dock-to-primary: ${message}`);
+        console.log(`keep-workspaces: ${message}`);
 }
 
 function describe(window) {
@@ -33,7 +33,7 @@ const MOVABLE_TYPES = [
     Meta.WindowType.MODAL_DIALOG,
 ];
 
-export default class DockToPrimaryExtension extends Extension {
+export default class KeepWorkspacesExtension extends Extension {
     enable() {
         // window -> {index, onAll, time, previous}: the workspace it really
         // belonged to, whether it is currently on all workspaces because it
