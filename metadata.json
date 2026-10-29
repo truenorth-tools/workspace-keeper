@@ -1,7 +1,7 @@
 {
   "uuid": "dock-to-primary@truenorth-tools",
   "name": "Dock to Primary",
-  "description": "Whenever the primary display changes (a display is connected or disconnected, or a new primary is picked in Settings), move the windows from the previous primary display onto the new one, keeping each window on its workspace and you on the workspace you were using. Works with any connection (HDMI, DisplayPort, USB-C, docks).",
+  "description": "Keeps each window on its original workspace when the primary display changes, moving windows to the new primary display. Handles connecting and disconnecting displays and choosing a new primary in Settings, with fixed or dynamic workspaces. No configuration needed.",
   "shell-version": [
     "50"
   ],
