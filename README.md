@@ -2,7 +2,7 @@
 
 A GNOME Shell extension that keeps each window on its original workspace when the primary display changes.
 
-## The problem
+## Motivation
 
 With the setting to have workspaces on the primary display only, GNOME does not preserve the workspace layout when the primary display changes.
 
@@ -58,7 +58,7 @@ gnome-extensions enable dock-to-primary@truenorth-tools
 
 Dock to Primary differs from these in that it acts automatically whenever the primary display changes and restores each window's workspace rather than an exact position. It needs no saved layouts or per-app rules, so it works with any display.
 
-## Technical details
+## How it works
 
 The extension records the workspace of every window. When the displays change, it disregards workspace changes GNOME makes during the switch and waits until windows stop moving (0.4 seconds without changes, up to 6 seconds in total). It then moves the windows across and returns each one to its recorded workspace. With dynamic workspaces, it pauses GNOME's removal of empty workspaces until the restore is complete and recreates any workspace removed beforehand.
 
