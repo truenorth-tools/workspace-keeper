@@ -50,6 +50,15 @@ Requires GNOME Shell 50.
 
 The extension also runs on the lock screen, because displays are often connected while the screen is locked (for example when docking a laptop). If it were turned off while locked, it would forget each window's workspace and miss the change.
 
+## Tip: moving a window to the other display
+
+GNOME already has a shortcut for sending a single window to another display, alongside Super+Shift+Page Up/Down for workspaces:
+
+- **Super+Shift+←/→** moves the focused window to the display on its left or right.
+- **Super+Shift+↑/↓** does the same for displays stacked above or below.
+
+Which arrow to use depends on how the displays are arranged in Settings → Displays. To change the keys, look for "Move window one monitor to the left/right" in Settings → Keyboard → View and Customise Shortcuts → Navigation. A window moved back to the primary display lands on the workspace you're on.
+
 ## Known limitations
 
 - **Use a fixed number of workspaces.** With dynamic workspaces, GNOME removes workspaces that become empty while windows are being moved, so the numbering can shift and windows may land one workspace off. Set a fixed number in Settings → Multitasking → Workspaces.
