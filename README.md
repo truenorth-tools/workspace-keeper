@@ -35,13 +35,13 @@ Workspace Keeper moves the windows to the new primary display and returns each w
 
 ```sh
 git clone https://github.com/truenorth-tools/workspace-keeper.git \
-    ~/.local/share/gnome-shell/extensions/keep-workspaces@truenorth-tools
+    ~/.local/share/gnome-shell/extensions/workspace-keeper@truenorth-tools
 ```
 
 Log out and back in (on Wayland, GNOME Shell loads new extensions only at login), then run:
 
 ```sh
-gnome-extensions enable keep-workspaces@truenorth-tools
+gnome-extensions enable workspace-keeper@truenorth-tools
 ```
 
 ## Known limitations
@@ -69,7 +69,7 @@ The extension remains active on the lock screen, as laptops are often docked whi
 To enable logging, set `DEBUG = true` near the top of `extension.js`, log out and back in, then follow the log while connecting or disconnecting a display:
 
 ```sh
-journalctl --user -f | grep keep-workspaces
+journalctl --user -f | grep workspace-keeper
 ```
 
 Please include this output when [opening an issue](https://github.com/truenorth-tools/workspace-keeper/issues).

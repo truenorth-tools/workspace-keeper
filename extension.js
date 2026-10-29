@@ -20,7 +20,7 @@ const DEBUG = false;
 
 function debug(message) {
     if (DEBUG)
-        console.log(`keep-workspaces: ${message}`);
+        console.log(`workspace-keeper: ${message}`);
 }
 
 function describe(window) {
