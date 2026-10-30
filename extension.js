@@ -116,7 +116,8 @@ export default class KeepWorkspacesExtension extends Extension {
 
     _track(window) {
         // Menus, tooltips and other popups come and go all the time and are
-        // never moved, so don't spend signal handlers on them.
+        // never moved, so don't spend signal handlers on them. Only windows
+        // tracked here are ever snapshotted or moved.
         if (this._windowSignals.has(window) || window.is_override_redirect() ||
             !MOVABLE_TYPES.includes(window.get_window_type()))
             return;
@@ -224,8 +225,7 @@ export default class KeepWorkspacesExtension extends Extension {
         const now = GLib.get_monotonic_time() / 1000;
         this._pending.clear();
         for (const [window, entry] of this._workspaces) {
-            if (!MOVABLE_TYPES.includes(window.get_window_type()) ||
-                window.skip_taskbar || window.is_always_on_all_workspaces())
+            if (window.skip_taskbar || window.is_always_on_all_workspaces())
                 continue;
             const recent = now - entry.time < LOOKBACK_MS;
             const {index, onAll} = recent && entry.previous ? entry.previous : entry;
@@ -415,9 +415,7 @@ export default class KeepWorkspacesExtension extends Extension {
             return changed;
 
         for (const window of this._windowSignals.keys()) {
-            if (!MOVABLE_TYPES.includes(window.get_window_type()) || window.skip_taskbar)
-                continue;
-            if (!sources.has(window.get_monitor()))
+            if (window.skip_taskbar || !sources.has(window.get_monitor()))
                 continue;
 
             if (DEBUG) {
