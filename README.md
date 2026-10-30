@@ -27,9 +27,24 @@ Workspace Keeper moves the windows to the new primary display and returns each w
 
 ## Installation
 
-### From extensions.gnome.org
+Workspace Keeper isn't on extensions.gnome.org; install it from GitHub.
 
-*(Link to follow once the extension is approved.)*
+### From a release
+
+Download the zip from the [latest release](https://github.com/truenorth-tools/workspace-keeper/releases/latest) and install it:
+
+```sh
+wget https://github.com/truenorth-tools/workspace-keeper/releases/latest/download/workspace-keeper@truenorth-tools.shell-extension.zip
+gnome-extensions install workspace-keeper@truenorth-tools.shell-extension.zip
+```
+
+Log out and back in (on Wayland, GNOME Shell loads new extensions only at login), then run:
+
+```sh
+gnome-extensions enable workspace-keeper@truenorth-tools
+```
+
+To update, download the new zip and run `gnome-extensions install --force` with it, then log out and back in.
 
 ### From source
 
