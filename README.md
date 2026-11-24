@@ -25,6 +25,18 @@ Workspace Keeper moves the windows to the new primary display and returns each w
 - **Workspaces on primary display only** enabled (the GNOME default), under Settings → Multitasking.
 - The display to work on set as primary, under Settings → Displays.
 
+Workspaces on all displays also work: windows are moved to the new primary display and keep their workspaces in the same way.
+
+### PaperWM
+
+Support for [PaperWM](https://github.com/paperwm/PaperWM) is optional: it runs only while PaperWM is enabled, and nothing changes without it.
+
+PaperWM shows a separate workspace on each display. When the displays change, the primary display shows the workspace that was active, every other workspace opens on the primary display, and each other display keeps one workspace of its own, which stays free as extra space. Windows are not moved between workspaces.
+
+The primary display's workspaces stay numbered from 1, and switching workspaces or moving windows with the keyboard skips the other displays' workspaces, as GNOME does with workspaces on the primary display only. Only the primary display slides when switching workspaces. A dialog or other floating window left on a display that shows a different workspace from its own is moved to the display showing its workspace.
+
+PaperWM is turned off while the screen is locked and treats fullscreen windows as floating windows when it starts again, pinning them to every workspace. After unlocking, the extension returns them to their workspaces in the tiling.
+
 ## Installation
 
 Workspace Keeper isn't on extensions.gnome.org; install it from GitHub.
